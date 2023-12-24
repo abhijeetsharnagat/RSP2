@@ -116,61 +116,48 @@
     </button>
   </div>
 
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      // Initialize score with default values if not present in localStorage
-      const score = JSON.parse(localStorage.getItem('score')) || { wins: 0, lose: 0, ties: 0 };
+ <script>
+  document.addEventListener("DOMContentLoaded", function () {
+    // Initialize score with default values if not present in localStorage
+    const score = JSON.parse(localStorage.getItem('score')) || { wins: 0, lose: 0, ties: 0 };
 
-      function pickComputerMove(playerMove) {
-        const randomNumb0 = Math.random();
+    function pickComputerMove(playerMove) {
+      const randomNumb0 = Math.random();
 
-        if (randomNumb0 < 1 / 3) {
-          computerMove = 'Rock';
-        } else if (randomNumb0 < 2 / 3) {
-          computerMove = 'Paper';
+      if (randomNumb0 < 1 / 3) {
+        computerMove = 'Rock';
+      } else if (randomNumb0 < 2 / 3) {
+        computerMove = 'Paper';
+      } else {
+        computerMove = 'Scissors';
+      }
+
+      determineWinner(playerMove, computerMove);
+    }
+
+    function determineWinner(playerMove, computerMove) {
+      if (score) {
+        if (playerMove === computerMove) {
+          score.ties++;
+          alert(`Computer chooses ${computerMove}. It's a tie!\nWins: ${score.wins} | Lose: ${score.lose} | Ties: ${score.ties}`);
+        } else if (
+          (playerMove === 'Rock' && computerMove === 'Scissors') ||
+          (playerMove === 'Paper' && computerMove === 'Rock') ||
+          (playerMove === 'Scissors' && computerMove === 'Paper')
+        ) {
+          score.wins++;
+          alert(`Computer chooses ${computerMove}. You win!\nWins: ${score.wins} | Lose: ${score.lose} | Ties: ${score.ties}`);
         } else {
-          computerMove = 'Scissors';
+          score.lose++;
+          alert(`Computer chooses ${computerMove}. You lose!\nWins: ${score.wins} | Lose: ${score.lose} | Ties: ${score.ties}`);
         }
 
-        determineWinner(playerMove, computerMove);
-      }
-
-      function determineWinner(playerMove, computerMove) {
-        if (score) {
-          if (playerMove === computerMove) {
-            score.ties++;
-            alert(`Computer chooses ${computerMove}. It's a tie!\nWins: ${score.wins} | Lose: ${score.lose} | Ties: ${score.ties}`);
-          } else if (
-            (playerMove === 'Rock' && computerMove === 'Scissors') ||
-            (playerMove === 'Paper' && computerMove === 'Rock') ||
-            (playerMove === 'Scissors' && computerMove === 'Paper')
-          ) {
-            score.wins++;
-            alert(`Computer chooses ${computerMove}. You win!\nWins: ${score.wins} | Lose: ${score.lose} | Ties: ${score.ties}`);
-          } else {
-            score.lose++;
-            alert(`Computer chooses ${computerMove}. You lose!\nWins: ${score.wins} | Lose: ${score.lose} | Ties: ${score.ties}`);
-          }
-
-          // Update localStorage with the updated score
-          localStorage.setItem('score', JSON.stringify(score));
-        }
-      }
-
-      function resetScore() {
-        // Reset score to default values
-        score.wins = 0;
-        score.lose = 0;
-        score.ties = 0;
-
-        alert('Score resetted');
-
-        // Update localStorage with the reset score
+        // Update localStorage with the updated score
         localStorage.setItem('score', JSON.stringify(score));
       }
-    });
-  </script>
+    }
+  });
+</script>
 
-</body>
 
 </html>
